@@ -104,11 +104,20 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PreBuildEvent>
+      <Command>python $(ProjectDir)FetchInput.py</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -154,6 +163,7 @@
     <ClCompile Include="9\9.cpp" />
     <ClCompile Include="ChallengeSelector.cpp" />
     <ClCompile Include="DataInput.cpp" />
+    <ClCompile Include="Helpers\InputTransformer.cpp" />
     <ClCompile Include="Helpers\Point.cpp" />
     <ClCompile Include="Helpers\Range.cpp" />
     <ClCompile Include="Helpers\RangeByLength.cpp" />
@@ -190,6 +200,7 @@
     <ClInclude Include="9\9.h" />
     <ClInclude Include="ChallengeSelector.h" />
     <ClInclude Include="DataInputEnvironment.h" />
+    <ClInclude Include="Helpers\InputTransformer.h" />
     <ClInclude Include="Helpers\PairHash.h" />
     <ClInclude Include="Helpers\Point.h" />
     <ClInclude Include="Helpers\Range.h" />

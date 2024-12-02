@@ -4,10 +4,9 @@
 
 class Input : public IInput
 {
+public:
 	Input(const std::string& day);
 
 	void resetStream() override;
-
-	Matrix toMatrix() override;
 };
 

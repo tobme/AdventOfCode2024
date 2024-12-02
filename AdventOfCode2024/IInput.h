@@ -3,8 +3,6 @@
 #include <fstream>
 #include <vector>
 
-using Matrix = std::vector<std::vector<char>>;
-
 class IInput : public std::fstream
 {
 public:
@@ -12,6 +10,4 @@ public:
 	~IInput() = default;
 
 	virtual void resetStream() = 0;
-
-	virtual Matrix toMatrix() = 0;
 };

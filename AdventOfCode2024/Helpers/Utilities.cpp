@@ -3,6 +3,11 @@
 
 namespace Util
 {
+	template<>
+	int transformConverter(const std::string& s)
+	{
+		return std::stoi(s);
+	}
 
 	std::vector<std::string> split(std::string s, std::string delimiter) {
 		size_t pos_start = 0, pos_end, delim_len = delimiter.length();
@@ -35,4 +40,7 @@ namespace Util
 
 		return dist6(rng);
 	}
+
+	extern template int Util::transformConverter<int>(const std::string&);
 }
+

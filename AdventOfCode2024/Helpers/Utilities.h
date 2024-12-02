@@ -5,6 +5,9 @@
 
 namespace Util
 {
+	template<typename T>
+	T transformConverter(const std::string& s);
+
 
 	std::vector<std::string> split(std::string s, std::string delimiter);
 
