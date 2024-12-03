@@ -28,3 +28,6 @@ std::vector<std::vector<T>> ToMatrix(std::shared_ptr<IInput>& input, std::functi
 }
 
 template std::vector<std::vector<int>> ToMatrix<int>(std::shared_ptr<IInput>& input, std::function<int(std::string)> func, const std::string& delimeter);
+template std::vector<std::vector<double>> ToMatrix<double>(std::shared_ptr<IInput>& input, std::function<double(std::string)> func, const std::string& delimeter);
+template std::vector<std::vector<char>> ToMatrix<char>(std::shared_ptr<IInput>& input, std::function<char(std::string)> func, const std::string& delimeter);
+template std::vector<std::vector<unsigned long long>> ToMatrix<unsigned long long>(std::shared_ptr<IInput>& input, std::function<unsigned long long(std::string)> func, const std::string& delimeter);
