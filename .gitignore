@@ -398,3 +398,6 @@ out/
 
 # JetBrains Rider
 *.sln.iml
+
+InputData.txt
+session.txt
