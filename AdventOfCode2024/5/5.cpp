@@ -59,39 +59,40 @@ std::string Day5::runPart1()
 
 	return std::to_string(res);
 }
-
-bool sortHelper(std::vector<std::string>& s, std::unordered_map<std::string, std::unordered_set<std::string>>& orderingRules)
-{
-
-	for (int i = 0; i < s.size(); i++)
+namespace {
+	bool sortHelper(std::vector<std::string>& s, std::unordered_map<std::string, std::unordered_set<std::string>>& orderingRules)
 	{
-		auto& set = orderingRules[s[i]];
-		for (int j = i + 1; j < s.size(); j++)
-		{
-			if (set.contains(s[j]))
-			{
-				std::swap(s[i], s[j]);
-				return true;
-			}
-		}
-	}
-	return false;
-}
 
-std::vector<std::string>& sort(std::vector<std::string>& s, std::unordered_map<std::string, std::unordered_set<std::string>>& orderingRules)
-{
-	bool swapped = true;
-	while (swapped)
-	{
 		for (int i = 0; i < s.size(); i++)
 		{
-			swapped = sortHelper(s, orderingRules);
-
-			if (swapped)
-				break;
+			auto& set = orderingRules[s[i]];
+			for (int j = i + 1; j < s.size(); j++)
+			{
+				if (set.contains(s[j]))
+				{
+					std::swap(s[i], s[j]);
+					return true;
+				}
+			}
 		}
+		return false;
 	}
-	return s;
+
+	std::vector<std::string>& sort(std::vector<std::string>& s, std::unordered_map<std::string, std::unordered_set<std::string>>& orderingRules)
+	{
+		bool swapped = true;
+		while (swapped)
+		{
+			for (int i = 0; i < s.size(); i++)
+			{
+				swapped = sortHelper(s, orderingRules);
+
+				if (swapped)
+					break;
+			}
+		}
+		return s;
+	}
 }
 
 std::string Day5::runPart2()

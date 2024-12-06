@@ -1,5 +1,6 @@
 #include "Utilities.h"
 #include <random>
+#include <iostream>
 
 namespace Util
 {
@@ -57,6 +58,22 @@ namespace Util
 		std::uniform_int_distribution<std::mt19937::result_type> dist6(start, end);
 
 		return dist6(rng);
+	}
+
+	void print(const std::vector<std::vector<char>>& matrix, const std::pair<int,int>& pos)
+	{
+		for (int i = 0; i < matrix.size(); i++)
+		{
+			for (int j = 0; j < matrix.at(i).size(); j++)
+			{
+				if (i == pos.first && j == pos.second)
+					std::cout << "P";
+				else
+					std::cout << matrix[i][j];
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
 	}
 
 	extern template int Util::transformConverter<int>(const std::string&);
