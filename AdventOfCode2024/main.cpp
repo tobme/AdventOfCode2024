@@ -27,7 +27,14 @@ int main()
 	int intDay = unsigned{ ymd.day() };
 
 	// Get day
-	std::string day = std::to_string(intDay);
+	std::string day;
+
+	std::cout << "Day: (c current day):";
+	std::cin >> day;
+	std::cout << std::endl;
+
+	if (day == "c")
+		day = std::to_string(intDay);
 
 	auto part = InputSelector::GetInputFromList({ "Part1", "Part2"});
 
