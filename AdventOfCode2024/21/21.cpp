@@ -66,9 +66,8 @@ std::string move(std::vector < std::pair<int, int>>& pos, const std::pair<int, i
 	{
 		res.append(move(pos, dirKeyPad['A'], currLayer + 1, maxLayer));
 	}
-
-	if (currLayer == maxLayer)
-		res.append("A"); // PRESS A
+	else
+		res.append("A");
 
 	memory[id] = res;
 
@@ -103,9 +102,7 @@ std::string Day21::runPart1()
 				std::string tmp = move(dirKeyPadPosses, dirKeyPad[d], 0, 1);
 				res += tmp;
 			}
-
-			std::string tmp = move(dirKeyPadPosses, dirKeyPad['A'], 0, 1);
-			res += tmp;
+			//res += 'A';
 		}
 		auto size = res.size();
 		totRes += size * numberIdI;
