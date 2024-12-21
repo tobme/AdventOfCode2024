@@ -48,6 +48,8 @@ int main()
 
 	std::string answer = "";
 
+	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
 	if (part == "Part1")
 	{
 		answer = challengeSelector->runChallengePart1();
@@ -57,7 +59,10 @@ int main()
 		answer = challengeSelector->runChallengePart2();
 	}
 
+	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+
 	std::cout << "Answer: " << answer << std::endl;
+	std::cout << "Took Time = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " [ms]" << std::endl;
 
 	return 0;
 }

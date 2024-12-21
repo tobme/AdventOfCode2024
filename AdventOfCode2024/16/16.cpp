@@ -160,8 +160,6 @@ std::string Day16::runPart2()
 
 	unsigned long long res = 0;
 
-	Chief tmp;
-
 	std::unordered_map<std::tuple<int, int, int>, unsigned long long, StateHash> visited;
 	visited[{pos.first, pos.second, 0}] = 0;
 
