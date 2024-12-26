@@ -10,6 +10,9 @@ day = today.day
 print(year)
 print(day)
 
+if (day > 25):
+	exit(0)
+
 path = str(day) + "/InputData.txt"
 f = open("session.txt", "r")
 
