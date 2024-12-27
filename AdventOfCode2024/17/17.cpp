@@ -39,11 +39,14 @@ void Day17::bxc(int operand)
 	B ^= C;
 }
 
+std::string outValue = "";
+
 void Day17::out(int operand)
 {
 	unsigned long long opValue = getOperandValue(operand) % 8;
 
 	res.append(std::to_string(opValue) + ",");
+	outValue = std::to_string(opValue);
 }
 
 void Day17::bdv(int operand)
@@ -169,11 +172,58 @@ std::string Day17::runPart2()
 	ss = Util::split(s, ": ");
 	instructions = Util::split(ss[1], ",");
 
-	while (instructionPointer < instructions.size())
+	int resPtr = 0;
+
+	int timesCounter = 0;
+
+	std::vector<unsigned long long> resHelper(16,0);
+
+	int stepInc = 1;
+
+	for (unsigned long long i = 0; i < std::pow(8, 16) - 1; i+= stepInc)
 	{
-		performInstruction(instructionPointer);
-		instructionPointer += 2;
+		instructionPointer = 0;
+		A = i;
+		B = 0;
+		C = 0;
+		resPtr = 0;
+		while (instructionPointer < instructions.size())
+		{
+			performInstruction(instructionPointer);
+
+			if (instructionPointer > 0 && instructions[instructionPointer] == "5")
+			{
+				if (outValue != instructions[resPtr])
+					break;
+
+				//std::cout << "INC " << resPtr << " A VALUE " << i - resHelper[resPtr] << std::endl;
+				resHelper[resPtr] = i;
+
+				if (resPtr == 0 && stepInc == 1)
+					stepInc = 8;
+				else if (resPtr == 1 && stepInc == 8)
+					stepInc = 512;
+				else if (resPtr == 2 && stepInc == 512)
+					stepInc = 2048;
+				else if (resPtr == 3 && stepInc == 2048)
+					stepInc = 4096;
+				else if (resPtr == 4 && stepInc == 4096)
+					stepInc = 65536;
+				else if (resPtr == 5 && stepInc == 65536)
+					stepInc = 262144;
+
+				resPtr++;
+			}
+
+			instructionPointer += 2;
+		}
+
+		if (resPtr == 16)
+			break;
+		timesCounter++;
 	}
+
+
 	return res;
 }
 
