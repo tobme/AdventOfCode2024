@@ -136,6 +136,77 @@ std::pair<std::string, std::pair<int,int>> move(std::pair<int,int>& pos, char go
 	return { res, goalPos };
 }
 
+std::unordered_map < std::string, std::pair<unsigned long long, std::pair<int, int>> > memory2;
+
+std::pair<unsigned long long, std::pair<int, int>> move2(std::pair<int, int>& pos, char goalC, const std::unordered_map<char, std::pair<int, int>>& keyPad, int currLayer, int maxLayer)
+{
+	const std::pair<int, int> goalPos = keyPad.at(goalC);
+
+	if (currLayer == maxLayer)
+	{
+		return { 1, goalPos };
+	}
+
+	std::string id = std::to_string(pos.first) + "_" + std::to_string(pos.second) + ":" + std::to_string(goalPos.first) + "_" + std::to_string(goalPos.second) + ":" + std::to_string(currLayer) + "0_2";
+
+	if (memory.contains(id))
+		return memory2[id];
+
+	unsigned long long res = 0;
+	std::vector<std::pair<unsigned long long, std::pair<int, int>>> resV;
+
+	std::queue< std::tuple<int, int, unsigned long long, std::pair<int, int>>> queue;
+
+	std::pair<int, int> startPos = { 0,2 };
+	queue.push({ pos.first, pos.second, 0, startPos });
+
+	while (!queue.empty())
+	{
+		auto front = queue.front();
+		queue.pop();
+
+		if (std::get<0>(front) == goalPos.first && std::get<1>(front) == goalPos.second)
+		{
+			auto tmp = move2(std::get<3>(front), 'A', dirKeyPad, currLayer + 1, maxLayer);
+			resV.push_back({ std::get<2>(front) + tmp.first, std::get<3>(front) });
+		}
+		else
+		{
+			auto dV = moveHelper({ std::get<0>(front), std::get<1>(front) }, goalPos);
+
+			for (auto d : dV)
+			{
+				auto newRow = std::get<0>(front) + dirHelper[d].first;
+				auto newCol = std::get<1>(front) + dirHelper[d].second;
+
+				std::string tmpId = std::string(1, d) + ":" + std::to_string(currLayer) + ":" + std::to_string(std::get<3>(front).first) + "_" + std::to_string(std::get<3>(front).second);
+				std::pair<unsigned long long, std::pair<int, int>> tmp;
+
+				if (memory2.contains(tmpId))
+					tmp = memory2[tmpId];
+				else
+					tmp = move2(std::get<3>(front), d, dirKeyPad, currLayer + 1, maxLayer);
+
+				memory2[tmpId] = tmp;
+
+				if ((currLayer == 0 && (newRow != 3 || newCol != 0)) || (currLayer != 0 && (newRow != 0 || newCol != 0)))
+					queue.push({ newRow, newCol, std::get<2>(front) + tmp.first, tmp.second });
+			}
+		}
+	}
+	std::pair<int, int> levelAbovePos = { 0,2 };
+	if (!resV.empty())
+	{
+		auto it = std::min_element(resV.begin(), resV.end(), [](const auto& s, const auto& s2) { return s.first < s2.first; });
+		res = it->first;
+		levelAbovePos = it->second;
+	}
+
+	memory2[id] = { res, goalPos };
+
+	return { res, goalPos };
+}
+
 std::string Day21::runPart1()
 {
 	std::string s;
@@ -168,6 +239,8 @@ std::string Day21::runPart1()
 	return std::to_string(totRes);
 }
 
+
+
 std::string Day21::runPart2()
 {
 	std::string s;
@@ -183,18 +256,18 @@ std::string Day21::runPart2()
 		std::string numberId = s;
 		numberId.pop_back();
 		unsigned long long numberIdI = std::stoull(numberId);
-		std::string res = "";
+		unsigned long long res = 0;
 
 		for (auto& c : s)
 		{
 			std::pair<int, int> goalPos = keyPad[c];
 
-			auto tmp = move(keyPadPos, c, keyPad, 0, 26);
+			auto tmp = move2(keyPadPos, c, keyPad, 0, 26);
 			keyPadPos = tmp.second;
 
 			res += tmp.first;
 		}
-		auto size = res.size();
+		auto size = res;
 		totRes += size * numberIdI;
 	}
 	return std::to_string(totRes);
