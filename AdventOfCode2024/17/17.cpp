@@ -150,6 +150,52 @@ std::string Day17::runPart1()
 	return res;
 }
 
+void printBytes(unsigned long long b)
+{
+	std::string out = "";
+
+	int i = 16 * 3;
+
+	while (b != 0)
+	{
+		if (b >= std::pow(2, i))
+		{
+			b -= std::pow(2, i);
+			out += "1";
+		}
+		else
+			out += "0";
+
+		i--;
+	}
+	std::cout << out << std::endl;
+}
+
+unsigned long long find2(unsigned long long answr, int resPtr, const std::vector<std::string>& instructions)
+{
+	if (resPtr == -1) return answr;
+
+	for (int i = 0; i < 8; i++)
+	{
+		unsigned long long a = (answr << 3) | i;
+		unsigned long long b = a % 8;
+		b ^= 2;
+		unsigned long long c = a >> b;
+		b ^= 7;
+		b ^= c;
+		unsigned long long print = b % 8;
+
+		if (print == std::stoull(instructions.at(resPtr)))
+		{
+			unsigned long long tmp = find2(a, resPtr - 1, instructions);
+			if (tmp != 0)
+				return tmp;
+		}
+	}
+
+	return 0;
+}
+
 std::string Day17::runPart2()
 {
 	std::string s;
@@ -178,52 +224,13 @@ std::string Day17::runPart2()
 
 	std::vector<unsigned long long> resHelper(16,0);
 
-	int stepInc = 1;
+	int stepInc = 0;
 
-	for (unsigned long long i = 0; i < std::pow(8, 16) - 1; i+= stepInc)
-	{
-		instructionPointer = 0;
-		A = i;
-		B = 0;
-		C = 0;
-		resPtr = 0;
-		while (instructionPointer < instructions.size())
-		{
-			performInstruction(instructionPointer);
+	unsigned long long retRes = 0;
+	unsigned long long i = 0;
 
-			if (instructionPointer > 0 && instructions[instructionPointer] == "5")
-			{
-				if (outValue != instructions[resPtr])
-					break;
+	auto answ = find2(0, 15, instructions);
 
-				//std::cout << "INC " << resPtr << " A VALUE " << i - resHelper[resPtr] << std::endl;
-				resHelper[resPtr] = i;
-
-				if (resPtr == 0 && stepInc == 1)
-					stepInc = 8;
-				else if (resPtr == 1 && stepInc == 8)
-					stepInc = 512;
-				else if (resPtr == 2 && stepInc == 512)
-					stepInc = 2048;
-				else if (resPtr == 3 && stepInc == 2048)
-					stepInc = 4096;
-				else if (resPtr == 4 && stepInc == 4096)
-					stepInc = 65536;
-				else if (resPtr == 5 && stepInc == 65536)
-					stepInc = 262144;
-
-				resPtr++;
-			}
-
-			instructionPointer += 2;
-		}
-
-		if (resPtr == 16)
-			break;
-		timesCounter++;
-	}
-
-
-	return res;
+	return std::to_string(retRes);
 }
 
